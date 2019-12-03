@@ -31,6 +31,7 @@
         org-download
         (org-jira :toggle org-enable-jira-support)
         org-mime
+        org-tempo
         org-pomodoro
         org-present
         org-cliplink

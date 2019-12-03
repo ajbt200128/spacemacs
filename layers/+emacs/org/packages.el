@@ -25,6 +25,7 @@
     (org-agenda :location built-in)
     org-download
     org-mime
+    org-tempo
     org-pomodoro
     org-present
     (org-projectile :toggle (configuration-layer/package-usedp 'projectile))

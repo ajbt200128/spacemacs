@@ -32,3 +32,5 @@
   (spacemacs/setup-startup-hook)
   (require 'server)
   (unless (server-running-p) (server-start)))
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+  (load-theme `tron-legacy t)

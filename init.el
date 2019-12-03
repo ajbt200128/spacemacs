@@ -40,6 +40,8 @@
     (spacemacs-buffer/display-startup-note)
     (spacemacs/setup-startup-hook)
     (spacemacs/dump-eval-delayed-functions)
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+    (load-theme `tron-legacy t)
     (when (and dotspacemacs-enable-server (not (spacemacs-is-dumping-p)))
       (require 'server)
       (when dotspacemacs-server-socket-dir

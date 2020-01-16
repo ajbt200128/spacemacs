@@ -15,6 +15,7 @@
         company-emoji
         emoji-cheat-sheet-plus
         evil-org
+        (ox-koma-letter :location local)
         evil-surround
         gnuplot
         (helm-org :toggle (configuration-layer/layer-used-p 'helm))
@@ -138,6 +139,7 @@
         "Make function for setting the emphasis in org mode"
         `(defun ,fname () (interactive)
                 (org-emphasize ,char)))
+
 
       ;; Follow the confirm and abort conventions
       (with-eval-after-load 'org-capture
@@ -740,6 +742,15 @@ Headline^^            Visit entry^^               Filter^^                    Da
 (defun org/pre-init-org-re-reveal ()
   (spacemacs|use-package-add-hook org :post-config (require 'org-re-reveal)))
 (defun org/init-org-re-reveal ())
+
+(defun org/init-ox-koma-letter ()
+  (use-package ox-koma-letter
+    :init
+    (progn
+      (with-eval-after-load 'ox-reveal '(require 'ox-koma-letter))
+      )
+    )
+  )
 
 (defun org/post-init-persp-mode ()
   (spacemacs|define-custom-layout "@Org"

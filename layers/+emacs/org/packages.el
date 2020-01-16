@@ -15,6 +15,7 @@
     company-emoji
     emoji-cheat-sheet-plus
     (evil-org :location local)
+    (ox-koma-letter :location local)
     evil-surround
     gnuplot
     htmlize
@@ -121,6 +122,7 @@
         "Make function for setting the emphasis in org mode"
         `(defun ,fname () (interactive)
                 (org-emphasize ,char)))
+
 
       ;; Follow the confirm and abort conventions
       (with-eval-after-load 'org-capture
@@ -533,6 +535,15 @@ Headline^^            Visit entry^^               Filter^^                    Da
 
 (defun org/init-ox-reveal ()
   (spacemacs|use-package-add-hook org :post-config (require 'ox-reveal)))
+
+(defun org/init-ox-koma-letter ()
+  (use-package ox-koma-letter
+    :init
+    (progn
+      (with-eval-after-load 'ox-reveal '(require 'ox-koma-letter))
+      )
+    )
+  )
 
 (defun org/post-init-persp-mode ()
   (spacemacs|define-custom-layout "@Org"

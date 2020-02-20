@@ -49,8 +49,8 @@ values."
      git
      ranger
      spell-checking
-     syntax-checking
-     languagetool
+     (languagetool :variables
+                   langtool-java-classpath "/usr/share/languagetool")
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these

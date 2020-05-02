@@ -19,6 +19,7 @@
 .recentf~
 .smex-items
 .trello
+straight
 /.cask/
 /.my-keybindings.el.swp
 /eww-bookmarks

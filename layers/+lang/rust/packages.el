@@ -31,8 +31,8 @@
     :defer t
     :init
     (progn
-      (spacemacs/declare-prefix-for-mode 'rustic "mc" "cargo")
-      (spacemacs/set-leader-keys-for-major-mode 'rustic
+      (spacemacs/declare-prefix-for-mode 'rustic-mode "mc" "cargo")
+      (spacemacs/set-leader-keys-for-major-mode 'rustic-mode
         "c." 'cargo-process-repeat
         "ca" 'cargo-process-add
         "cA" 'cargo-process-audit
@@ -62,14 +62,14 @@
   (spacemacs//rust-setup-company))
 
 (defun rust/post-init-counsel-gtags ()
-  (spacemacs/counsel-gtags-define-keys-for-mode 'rustic))
+  (spacemacs/counsel-gtags-define-keys-for-mode 'rustic-mode))
 
 (defun rust/pre-init-dap-mode ()
-  (add-to-list 'spacemacs--dap-supported-modes 'rustic)
-  (add-hook 'rustic-local-vars-hook #'spacemacs//rust-setup-dap))
+  (add-to-list 'spacemacs--dap-supported-modes 'rustic-mode)
+  (add-hook 'rustic-mode-local-vars-hook #'spacemacs//rust-setup-dap))
 
 (defun rust/post-init-flycheck ()
-  (spacemacs/enable-flycheck 'rustic))
+  (spacemacs/enable-flycheck 'rustic-mode))
 
 (defun rust/init-flycheck-rust ()
   (use-package flycheck-rust
@@ -77,10 +77,10 @@
     :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
 (defun rust/post-init-ggtags ()
-  (add-hook 'rustic-local-vars-hook #'spacemacs/ggtags-mode-enable))
+  (add-hook 'rustic-mode-local-vars-hook #'spacemacs/ggtags-mode-enable))
 
 (defun rust/post-init-helm-gtags ()
-  (spacemacs/helm-gtags-define-keys-for-mode 'rustic))
+  (spacemacs/helm-gtags-define-keys-for-mode 'rustic-mode))
 
 (defun rust/init-racer ()
   (use-package racer
@@ -88,10 +88,10 @@
     :commands racer-mode
     :config
     (progn
-      (spacemacs/add-to-hook 'rustic-hook '(racer-mode))
+      (spacemacs/add-to-hook 'rustic-mode-hook '(racer-mode))
       (spacemacs/add-to-hook 'racer-mode-hook '(eldoc-mode))
       (add-to-list 'spacemacs-jump-handlers-rustic 'racer-find-definition)
-      (spacemacs/set-leader-keys-for-major-mode 'rustic
+      (spacemacs/set-leader-keys-for-major-mode 'rustic-mode
         "hh" 'spacemacs/racer-describe)
       (spacemacs|hide-lighter racer-mode)
       (evilified-state-evilify-map racer-help-mode-map
@@ -106,18 +106,19 @@
     :defer t
     :init
     (progn
-      (spacemacs/add-to-hook 'rustic-hook '(spacemacs//rust-setup-backend))
-      (spacemacs/declare-prefix-for-mode 'rustic "mg" "goto")
-      (spacemacs/declare-prefix-for-mode 'rustic "mh" "help")
-      (spacemacs/declare-prefix-for-mode 'rustic "m=" "format")
-      (spacemacs/set-leader-keys-for-major-mode 'rustic
-        "==" 'rust-format-buffer
+      (push 'rustic-clippy flycheck-checkers)
+      (spacemacs/add-to-hook 'rustic-mode-hook '(spacemacs//rust-setup-backend))
+      (spacemacs/declare-prefix-for-mode 'rustic-mode "mg" "goto")
+      (spacemacs/declare-prefix-for-mode 'rustic-mode "mh" "help")
+      (spacemacs/declare-prefix-for-mode 'rustic-mode "m=" "format")
+      (spacemacs/set-leader-keys-for-major-mode 'rustic-mode
+        "==" 'rustic-format-buffer
         "q" 'spacemacs/rust-quick-run))))
 
 (defun rust/post-init-smartparens ()
   (with-eval-after-load 'smartparens
     ;; Don't pair lifetime specifiers
-    (sp-local-pair 'rustic "'" nil :actions nil)))
+    (sp-local-pair 'rustic-mode "'" nil :actions nil)))
 
 (defun rust/init-toml-mode ()
   (use-package toml-mode

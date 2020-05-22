@@ -11,7 +11,7 @@
 
 ;; Variables
 
-(spacemacs|define-jump-handlers rustic)
+(spacemacs|define-jump-handlers rustic-mode)
 
 (defvar rust-backend nil
   "The backend to use for completion.

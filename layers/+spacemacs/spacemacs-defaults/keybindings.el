@@ -14,13 +14,20 @@
 ;; ---------------------------------------------------------------------------
 
 ;; We define prefix commands only for the sake of which-key
-(setq spacemacs/key-binding-prefixes '(("SPC" "M-x")
+(setq spacemacs/key-binding-prefixes `((,dotspacemacs-emacs-command-key "M-x")
                                        ("!"   "shell cmd")
                                        ("*"   "search project w/input")
                                        ("/"   "search project")
                                        ("?"   "show keybindings")
                                        ("a"   "applications")
-                                       ("A"   "other applications")
+                                       ("ac"   "chat")
+                                       ("ae"   "email")
+                                       ("af"   "fun")
+                                       ("ar"   "readers")
+                                       ("am"   "music")
+                                       ("at"  "tools")
+                                       ("ats"  "shells")
+                                       ("aw"  "web-services")
                                        ("c"   "compile/comments")
                                        ("C"   "capture/colors")
                                        ("d"   "documentation")
@@ -175,7 +182,7 @@
    ("y" yank-rectangle "Paste last rectangle"))))
 ;; applications ---------------------------------------------------------------
 (spacemacs/set-leader-keys
-  "ac"  'calc-dispatch
+  "a*"  'calc-dispatch
   "ap"  'list-processes
   "aP"  'proced
   "au"  'undo-tree-visualize)
@@ -434,6 +441,8 @@
   "cC" 'compile
   "ck" 'kill-compilation
   "cr" 'recompile
+  "cn" 'next-error
+  "cN" 'previous-error
   "cd" 'spacemacs/show-hide-compilation-window
   "cb" 'spacemacs/switch-to-compilation-buffer)
 (with-eval-after-load 'compile

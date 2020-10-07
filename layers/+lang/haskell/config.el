@@ -1,6 +1,6 @@
 ;;; config.el --- Haskell Layer configuration File for Spacemacs
 ;;
-;; Copyright (c) 2012-2018 Sylvain Benner & Contributors
+;; Copyright (c) 2012-2020 Sylvain Benner & Contributors
 ;;
 ;; Author: Bjarke Vad Andersen <bjarke.vad90@gmail.com>
 ;; URL: https://github.com/syl20bnr/spacemacs
@@ -17,8 +17,8 @@
 
 (defvar haskell-completion-backend nil
   "Completion backend used by company.
-Available options are `ghci', `intero', `dante', `lsp' and `ghc-mod'.
-If `nil' then `ghci' is the default backend unless `lsp' layer is used.")
+Available options are `dante' and `lsp'.
+If `nil' then `dante' is the default backend unless `lsp' layer is used.")
 
 (defvar haskell-enable-hindent nil
   "Formatting with hindent; If t hindent is enabled.")

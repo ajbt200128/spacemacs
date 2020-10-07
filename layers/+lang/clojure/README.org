@@ -487,6 +487,7 @@ Evaluate Clojure code in the source code buffer
 |---------------+-------------------------------------------------------------------|
 | ~SPC m e ;~   | eval sexp and show result as comment                              |
 | ~SPC m e $~   | go to end of line and eval last sexp                              |
+| ~SPC m e (~   | eval 'list' around point (sequence, list, vector, map, set)       |
 | ~SPC m e b~   | eval buffer                                                       |
 | ~SPC m e e~   | eval last sexp                                                    |
 | ~SPC m e f~   | eval function at point                                            |
@@ -523,7 +524,7 @@ Use these key bindings when working directly with a REPL buffer.
 Use the Evaluation key bindings when evaluating in source code buffer.
 
 | Key binding       | Description                                                                |
-|-------------------*----------------------------------------------------------------------------|
+|-------------------+----------------------------------------------------------------------------|
 | ~SPC m s a~       | switch between REPL and last Clojure source code buffer (cider-repl)       |
 | ~SPC m s b~       | send and eval buffer in REPL                                               |
 | ~SPC m s B~       | send and eval buffer and switch to REPL in =insert state=                  |

@@ -32,14 +32,20 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(systemd
      markdown
      (lsp :variables
           lsp-rust-server 'rust-analyzer
       )
      java
-     c-c++
+     pdf
+     (c-c++ :variables
+            c-c++-backend 'lsp-clangd
+            c-c++-lsp-enable-semantic-highlight 'rainbow
+            c-c++-enable-clang-format-on-save t
+            c++-enable-organize-includes-on-save t)
      html
+     latex
      rust
      react
      shell
@@ -48,11 +54,11 @@ This function should only modify configuration layer settings."
      php
      javascript
      dap
-     python
+     (python :variables python-backend 'lsp python-lsp-server 'pyls)
      helm
      auto-completion
      emacs-lisp
-     org
+     (org :variables org-enable-github-support t)
      git
      ranger
      spell-checking
@@ -67,7 +73,6 @@ This function should only modify configuration layer settings."
    '(
      soft-stone-theme
      all-the-icons
-     rustic-mode
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -75,6 +80,8 @@ This function should only modify configuration layer settings."
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages
    '(
+     lsp-python-ms
+     rust-mode
      )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
@@ -487,9 +494,12 @@ dump."
 
 (defun dotspacemacs/user-config ()
   (setq rustic-lsp-server 'rust-analyzer)
-  (setq doom-modeline-height 30 )
-  (set-face-attribute 'mode-line nil :height 110)
-  (set-face-attribute 'mode-line-inactive nil :height 100)
+  (setq lsp-rust-analyzer-cargo-watch-command "clippy")
+  (setq buffer-save-without-query t)
+  (setq rustic-format-on-save nil)
+  (setq rustic-lsp-format t)
+  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+  (setq lsp-pyls-server-command '("/home/austin/.local/bin/pyls"))
   ;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
   (defun unfill-paragraph (&optional region)
     "Takes a multi-line paragraph and makes it into a single line of text."
@@ -503,9 +513,9 @@ dump."
   (global-git-commit-mode t)
   (setq user-mail-address "austin@cutedogs.org")
 
-  (with-eval-after-load 'rust-mode
-    (spacemacs/set-leader-keys-for-major-mode 'rust-mode "," 'my-cargo-run))
-  (defun my-cargo-run ()
+  (with-eval-after-load 'rustic
+    (spacemacs/set-leader-keys-for-major-mode 'rustic-mode "," 'quick-cargo-run))
+  (defun quick-cargo-run ()
     "Build and run Rust code."
     (interactive)
     (cargo-process-run)
@@ -586,10 +596,9 @@ This function is called at the very end of Spacemacs initialization."
  '(doom-modeline-icon t)
  '(doom-modeline-mode t)
  '(evil-want-Y-yank-to-eol nil)
- '(helm-completion-style (quote emacs))
+ '(helm-completion-style 'emacs)
  '(hl-todo-keyword-faces
-   (quote
-    (("TODO" . "#dc752f")
+   '(("TODO" . "#dc752f")
      ("NEXT" . "#dc752f")
      ("THEM" . "#2d9574")
      ("PROG" . "#4f97d7")
@@ -603,38 +612,36 @@ This function is called at the very end of Spacemacs initialization."
      ("TEMP" . "#b1951d")
      ("FIXME" . "#dc752f")
      ("XXX+" . "#dc752f")
-     ("\\?\\?\\?+" . "#dc752f"))))
- '(lsp-log-io t)
- '(lsp-prefer-capf t)
- '(org-agenda-files (quote ("~/org/gwu.org")))
+     ("\\?\\?\\?+" . "#dc752f")))
+ '(lsp-completion-provider t)
+ '(lsp-log-io nil)
+ '(lsp-ui-doc-enable t)
+ '(lsp-ui-doc-max-height 20)
+ '(org-agenda-files '("~/org/gwu.org"))
  '(org-capture-templates
-   (quote
-    (("g" "GWU Related items")
+   '(("g" "GWU Related items")
      ("gt" "GWU Task" entry
       (file+headline "~/org/gwu.org" "Tasks")
       "* TODO %? %^g" :prepend nil)
      ("go" "GWU Todo" entry
       (file+headline "~/org/gwu.org" "TODOs")
-      "* TODO %? %^g" :prepend t))))
+      "* TODO %? %^g" :prepend t)))
  '(org-export-global-macros
-   (quote
-    (("nonum" . "(eval \":PROPERTIES:\\n:UNNUMBERED: t\\n:END:\")"))))
- '(org-mobile-files (quote (org-agenda-files "gwu.org")))
+   '(("nonum" . "(eval \":PROPERTIES:\\n:UNNUMBERED: t\\n:END:\")")))
+ '(org-mobile-files '(org-agenda-files "gwu.org"))
  '(org-startup-truncated t)
  '(package-selected-packages
-   (quote
-    (rustic helm-purpose window-purpose imenu-list langtool mmm-mode markdown-toc markdown-mode gh-md company-emacs-eclim eclim xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data yaml-mode jinja2-mode company-ansible ansible-doc ansible csv-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern coffee-mode ranger zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme smeargle orgit magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor company-statistics company-anaconda company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
- '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
+   '(ron-mode helm-purpose window-purpose imenu-list langtool mmm-mode markdown-toc markdown-mode gh-md company-emacs-eclim eclim xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data yaml-mode jinja2-mode company-ansible ansible-doc ansible csv-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern coffee-mode ranger zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme smeargle orgit magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor company-statistics company-anaconda company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))
+ '(pdf-view-midnight-colors '("#b2b2b2" . "#292b2e"))
  '(spaceline-all-the-icons-clock-always-visible nil)
  '(spaceline-all-the-icons-eyebrowse-display-name nil)
- '(spaceline-all-the-icons-icon-set-git-ahead (quote commit))
- '(spaceline-all-the-icons-icon-set-window-numbering (quote solid))
- '(spaceline-all-the-icons-separator-type (quote slant) t)
+ '(spaceline-all-the-icons-icon-set-git-ahead 'commit)
+ '(spaceline-all-the-icons-icon-set-window-numbering 'solid)
+ '(spaceline-all-the-icons-separator-type 'slant t)
  '(spaceline-all-the-icons-separators-invert-direction nil)
  '(spaceline-all-the-icons-slim-render nil)
  '(yas-snippet-dirs
-   (quote
-    ("/home/austin/.emacs.d/private/snippets/" "/home/austin/.emacs.d/layers/+completion/auto-completion/local/snippets"))))
+   '("/home/austin/.emacs.d/private/snippets/" "/home/austin/.emacs.d/layers/+completion/auto-completion/local/snippets")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -644,8 +651,8 @@ This function is called at the very end of Spacemacs initialization."
  '(doom-modeline-evil-normal-state ((t (:foreground "DarkGoldenRod2"))))
  '(spaceline-all-the-icons-info-face ((t (:background "#3D5666" :foreground "#CBECFF"))))
  '(spaceline-all-the-icons-sunrise-face ((t (:inherit powerline-active2 :foreground "magenta"))))
- '(spaceline-evil-insert ((t (:background "chartreuse2" :foreground "#3E3D31" :inherit (quote mode-line)))))
- '(spaceline-evil-motion ((t (:background "plum3" :foreground "#3E3D31" :inherit (quote mode-line)))))
- '(spaceline-evil-normal ((t (:background "#3D566" :foreground "#CBCECFF" :inherit (quote mode-line)))))
- '(spaceline-highlight-face ((t (:background "3S5666" :foreground "#CBCECFF" :inherit (quote mode-line))))))
+ '(spaceline-evil-insert ((t (:background "chartreuse2" :foreground "#3E3D31" :inherit 'mode-line))))
+ '(spaceline-evil-motion ((t (:background "plum3" :foreground "#3E3D31" :inherit 'mode-line))))
+ '(spaceline-evil-normal ((t (:background "#3D566" :foreground "#CBCECFF" :inherit 'mode-line))))
+ '(spaceline-highlight-face ((t (:background "3S5666" :foreground "#CBCECFF" :inherit 'mode-line)))))
 )

@@ -20,7 +20,6 @@
     ggtags
     helm-gtags
     ron-mode
-    racer
     rustic
     smartparens
     toml-mode))
@@ -81,38 +80,25 @@
 (defun rust/post-init-helm-gtags ()
   (spacemacs/helm-gtags-define-keys-for-mode 'rustic-mode))
 
-(defun rust/init-racer ()
-  (use-package racer
-    :defer t
-    :commands racer-mode
-    :config
-    (progn
-      (spacemacs/add-to-hook 'rustic-mode-hook '(racer-mode))
-      (spacemacs/add-to-hook 'racer-mode-hook '(eldoc-mode))
-      (add-to-list 'spacemacs-jump-handlers-rustic 'racer-find-definition)
-      (spacemacs/set-leader-keys-for-major-mode 'rustic-mode
-        "hh" 'spacemacs/racer-describe)
-      (spacemacs|hide-lighter racer-mode)
-      (evilified-state-evilify-map racer-help-mode-map
-        :mode racer-help-mode))))
-
 (defun rust/init-company-lsp()
   (use-package company-lsp)
   )
 
+(defun rust/init-ron-mode()
+  (use-package ron-mode)
+  )
+
 (defun rust/init-rustic ()
   (use-package rustic
-    :defer t
+    :demand t
     :init
     (progn
-      (push 'rustic-clippy flycheck-checkers)
-      (spacemacs/add-to-hook 'rustic-mode-hook '(spacemacs//rust-setup-backend))
+      (spacemacs/add-to-hook 'rustic-mode-hook '(spacemacs//rust-setup-lsp))
       (spacemacs/declare-prefix-for-mode 'rustic-mode "mg" "goto")
       (spacemacs/declare-prefix-for-mode 'rustic-mode "mh" "help")
       (spacemacs/declare-prefix-for-mode 'rustic-mode "m=" "format")
       (spacemacs/set-leader-keys-for-major-mode 'rustic-mode
-        "==" 'rustic-format-buffer
-        "q" 'spacemacs/rust-quick-run))))
+        "==" 'rustic-format-buffer))))
 
 (defun rust/post-init-smartparens ()
   (with-eval-after-load 'smartparens

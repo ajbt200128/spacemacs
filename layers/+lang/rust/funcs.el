@@ -24,9 +24,10 @@
     (`lsp (spacemacs//rust-setup-lsp))))
 
 (defun spacemacs//rust-setup-company ()
-  "Conditionally setup company based on backend."
-  (pcase (spacemacs//rust-backend)
-    (`racer (spacemacs//rust-setup-racer-company))))
+  (spacemacs|add-company-backends
+    :backends company-capf
+    :modes rustic
+    :variables company-tooltip-align-annotations t))
 
 (defun spacemacs//rust-setup-dap ()
   "Conditionally setup elixir DAP integration."
@@ -45,8 +46,8 @@
   (if (configuration-layer/layer-used-p 'lsp)
       (progn
         (lsp)
-        (spacemacs/declare-prefix-for-mode 'rustic "ms" "switch")
-        (spacemacs/set-leader-keys-for-major-mode 'rustic
+        (spacemacs/declare-prefix-for-mode 'rustic-mode "ms" "switch")
+        (spacemacs/set-leader-keys-for-major-mode 'rustic-mode
           "ss" 'lsp-rust-switch-server))
     (spacemacs//lsp-layer-not-installed-message)))
 
@@ -54,28 +55,6 @@
   "Setup DAP integration."
   (require 'dap-gdb-lldb))
 
-
-;; racer
-
-(defun spacemacs//rust-setup-racer ()
-  "Setup racer backend"
-  (progn
-    (racer-mode)))
-
-(defun spacemacs//rust-setup-racer-company ()
-  "Setup racer auto-completion."
-  (spacemacs|add-company-backends
-    :backends company-capf
-    :modes rustic
-    :variables company-tooltip-align-annotations t))
-
-(defun spacemacs/racer-describe ()
-  "Show a *Racer Help* buffer for the function or type at point.
-If `help-window-select' is non-nil, also select the help window."
-  (interactive)
-  (let ((window (racer-describe)))
-    (when help-window-select
-      (select-window window))))
 
 ;; Misc
 

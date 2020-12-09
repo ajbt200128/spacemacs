@@ -69,7 +69,7 @@
 (configuration-layer/lazy-install 'restclient :extensions '("\\(\\.http\\'\\)" restclient-mode))
 (configuration-layer/lazy-install 'ruby
   :extensions '("\\(\\(?:\\.rb\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\)file\\)\\'\\|Puppetfile\\)" ruby-mode))
-(configuration-layer/lazy-install 'rust :extensions '("\\(\\.rs\\'\\)" rustic-mode))
+;;(configuration-layer/lazy-install 'rust :extensions '("\\(\\.rs\\'\\)" rustic-mode))
 (configuration-layer/lazy-install 'rust :extensions '("\\(\\.toml$\\)" toml-mode))
 ;; scala
 ;; scheme

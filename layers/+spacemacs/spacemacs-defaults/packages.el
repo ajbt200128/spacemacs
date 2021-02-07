@@ -125,7 +125,9 @@
     (evil-define-key 'normal dired-mode-map (kbd "N") 'evil-ex-search-previous))
   (when (eq 'hybrid dotspacemacs-editing-style)
     (evil-define-key 'normal dired-mode-map (kbd "n") 'evil-search-next)
-    (evil-define-key 'normal dired-mode-map (kbd "N") 'evil-search-previous)))
+    (evil-define-key 'normal dired-mode-map (kbd "N") 'evil-search-previous))
+  (add-hook 'spacemacs-post-user-config-hook
+            'spacemacs/dired-remove-evil-mc-gr-which-key-entry))
 
 (defun spacemacs-defaults/init-dired-x ()
   (use-package dired-x
@@ -251,6 +253,10 @@
             (t
              (setq display-line-numbers-type t)))
 
+      (spacemacs/declare-prefix "tn" "line-numbers")
+
+      ;; backwards compatibility of symbols:
+      ;; keep the spacemacs/toggle-line-numbers & friends around
       (spacemacs|add-toggle line-numbers
         :status (and (featurep 'display-line-numbers)
                      display-line-numbers-mode
@@ -260,8 +266,18 @@
         :off (display-line-numbers-mode -1)
         :on-message "Absolute line numbers enabled."
         :off-message "Line numbers disabled."
+        :documentation "Show the line numbers.")
+      (spacemacs|add-toggle absolute-line-numbers
+        :status (and (featurep 'display-line-numbers)
+                     display-line-numbers-mode
+                     (eq display-line-numbers t))
+        :on (prog1 (display-line-numbers-mode)
+              (setq display-line-numbers t))
+        :off (display-line-numbers-mode -1)
+        :on-message "Absolute line numbers enabled."
+        :off-message "Line numbers disabled."
         :documentation "Show the line numbers."
-        :evil-leader "tn")
+        :evil-leader "tna")
       (spacemacs|add-toggle relative-line-numbers
         :status (and (featurep 'display-line-numbers)
                      display-line-numbers-mode
@@ -272,7 +288,8 @@
         :documentation "Show relative line numbers."
         :on-message "Relative line numbers enabled."
         :off-message "Line numbers disabled."
-        :evil-leader "tr")
+        :evil-leader "tnr")
+
       (spacemacs|add-toggle visual-line-numbers
         :status (and (featurep 'display-line-numbers)
                      display-line-numbers-mode
@@ -283,7 +300,7 @@
         :documentation "Show relative visual line numbers."
         :on-message "Visual line numbers enabled."
         :off-message "Line numbers disabled."
-        :evil-leader "tV")
+        :evil-leader "tnv")
 
       (when (spacemacs//linum-backward-compabitility)
         (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -377,7 +394,8 @@
                                             global-mark-ring
                                             search-ring
                                             regexp-search-ring
-                                            extended-command-history)
+                                            extended-command-history
+                                            kill-ring)
             savehist-autosave-interval 60)
       (savehist-mode t))))
 
@@ -443,15 +461,11 @@
     :defer t
     :init
     (progn
-      (setq spacemacs-show-trailing-whitespace t)
-      (defun spacemacs//show-trailing-whitespace ()
-        (when spacemacs-show-trailing-whitespace
-          (set-face-attribute 'trailing-whitespace nil
-                              :background
-                              (face-attribute 'font-lock-comment-face
-                                              :foreground))
-          (setq show-trailing-whitespace 1)))
-      (add-hook 'prog-mode-hook 'spacemacs//show-trailing-whitespace)
+      (when dotspacemacs-show-trailing-whitespace
+        (set-face-attribute
+         'trailing-whitespace nil
+         :background (face-attribute 'font-lock-comment-face :foreground)))
+      (add-hook 'prog-mode-hook 'spacemacs//trailing-whitespace)
 
       (spacemacs|add-toggle whitespace
         :mode whitespace-mode
@@ -462,18 +476,6 @@
         :documentation "Display whitespace globally."
         :evil-leader "t C-w")
 
-      (defun spacemacs//set-whitespace-style-for-diff ()
-        "Whitespace configuration for `diff-mode'"
-        (setq-local whitespace-style '(face
-                                       tabs
-                                       tab-mark
-                                       spaces
-                                       space-mark
-                                       trailing
-                                       indentation::space
-                                       indentation::tab
-                                       newline
-                                       newline-mark)))
       (add-hook 'diff-mode-hook 'whitespace-mode)
       (add-hook 'diff-mode-hook 'spacemacs//set-whitespace-style-for-diff))
     :config

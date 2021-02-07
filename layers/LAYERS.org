@@ -1,7 +1,7 @@
-#+TITLE: Configuration layers
+#+TITLE: Spacemacs layers list
 
 * Table of Contents                     :TOC_5_gh:noexport:
-- [[#this-file-is-auto-generated][THIS FILE IS AUTO GENERATED]]
+- [[#description][Description]]
 - [[#chats][Chats]]
   - [[#erc][ERC]]
   - [[#jabber][Jabber]]
@@ -46,6 +46,7 @@
   - [[#keyboard-layout][Keyboard-layout]]
 - [[#miscellaneous][Miscellaneous]]
   - [[#copy-as-format][Copy-as-format]]
+  - [[#dtrt-indent][Dtrt-indent]]
   - [[#ietf][Ietf]]
   - [[#multiple-cursors][Multiple-cursors]]
   - [[#nlinum][Nlinum]]
@@ -100,6 +101,7 @@
       - [[#yang][Yang]]
     - [[#scripting][Scripting]]
       - [[#autohotkey][Autohotkey]]
+      - [[#graphql][Graphql]]
       - [[#shell-scripts][Shell Scripts]]
       - [[#vimscript-language][Vimscript language]]
       - [[#windows-scripting][Windows Scripting]]
@@ -254,9 +256,13 @@
   - [[#twitter][Twitter]]
   - [[#wakatime][Wakatime]]
 
-* THIS FILE IS AUTO GENERATED
-Don't edit it directly.
-See [[https://github.com/syl20bnr/spacemacs/blob/develop/CONTRIBUTING.org#readmeorg-tags]["README.org tags" section of CONTRIBUTING.org for the instructions]].
+* Description
+
+THIS FILE IS AUTO-GENERATED!
+Don't edit it directly. See [[https://github.com/syl20bnr/spacemacs/blob/develop/CONTRIBUTING.org#readmeorg-tags]["README.org tags" section of CONTRIBUTING.org for the instructions]].
+
+This is an overview of Spacemacs configuration layers. For information about
+configuration layer development see [[https://develop.spacemacs.org/doc/LAYERS.html][Configuration layers development]].
 
 * Chats
 ** ERC
@@ -486,6 +492,7 @@ Features:
 - Project-specific TODOs via [[https://github.com/IvanMalison/org-projectile][org-projectile]]
 - Easy insert of URLs from clipboard with org format via [[https://github.com/rexim/org-cliplink][org-cliplink]]
 - Rich insert of code (into a source block with highlighting, and a link) from other buffers via [[https://github.com/unhammer/org-rich-yank][org-rich-yank]]
+- Pixel-perfect visual alignment for Org and Markdown tables via [[https://github.com/casouri/valign][valign]]
 
 ** Outshine
 [[file:+emacs/outshine/README.org][+emacs/outshine/README.org]]
@@ -714,6 +721,16 @@ This layer adds support for [[https://github.com/sshaw/copy-as-format][copy-as-f
 Features:
 - Function to copy buffer locations as GitHub/Slack/JIRA/HipChat/... formatted code
 
+** Dtrt-indent
+[[file:+misc/dtrt-indent/README.org][+misc/dtrt-indent/README.org]]
+
+This is a simple layer wrapping the dtrt-indent Emacs package for automatic detection and switching of indentation style.
+
+It is automatically enabled using the method [[https://github.com/syl20bnr/spacemacs/issues/3203#issuecomment-264175032][suggested here]].
+
+Features:
+- Indentation style detection and automatic configuration to match file in open buffer.
+
 ** Ietf
 [[file:+misc/ietf/README.org][+misc/ietf/README.org]]
 
@@ -829,13 +846,17 @@ Features:
 - Support for selecting, copying and opening links using =avy= via =link-hint=.
 - Adding of sample text via =lorem-ipsum=.
 - Transient state for moving text via =move-text=.
-- Support for folding of code via =origami=.
+- Support for folding of code via =origami= and =evil-vimish-fold=.
 - Support for password generation via =password-generator=.
 - Support for improving parenthesis handling via =smartparens=.
 - Automatic whitespace cleanup on save via =spacemacs-whitespace-cleanup=.
 - Support for converting definitions to certain styles via =string-inflection=.
 - Support for generating UUIDs via =uuidgen=.
 - Support for conversion between Emacs regexps and PCRE regexps.
+- Support for persistent scratch via =persistent-scratch=.
+- Support for unkillable scratch via =unkillable-scratch=.
+- In =dired-mode=, press ~Shift S~ to select sorting.
+- Support for =evil-easymotion= if the editing style is =vim= or =hybrid=.
 
 ** Spacemacs-editing-visual
 [[file:+spacemacs/spacemacs-editing-visual/README.org][+spacemacs/spacemacs-editing-visual/README.org]]
@@ -878,6 +899,7 @@ Features:
 - Improves the comment function to be able to also do the inverse operation
 - Persistent highlight of searched text with =evil-search-highlight-persist=
 - Display tildes in non-buffer area with =vi-tilde-fringe=
+- Add =evil-collection=
 
 ** Spacemacs-language
 [[file:+spacemacs/spacemacs-language/README.org][+spacemacs/spacemacs-language/README.org]]
@@ -1110,11 +1132,12 @@ Related layers
 The following Spacemacs layers should also be added for a complete experience.
 - auto-completion
 - syntax-checking (provides flycheck for linter support)
+- LSP
 
 
 Other optional features
 - Refactoring via [[https://github.com/clojure-emacs/clj-refactor.el][clj-refactor]]
-- Debugging with [[https://github.com/clojure-emacs/sayid][sayid]] (beta)
+- Debugging with [[https://github.com/clojure-emacs/sayid][sayid]]
 
 
 References
@@ -1270,7 +1293,8 @@ This layer adds support for LaTeX files with [[https://savannah.gnu.org/projects
 
 Features:
 - Auto-build with [[https://github.com/tom-tan/auctex-latexmk/][auctex-latexmk]]
-- Auto-completion with [[https://github.com/alexeyr/company-auctex][company-auctex]]
+- Syntax highlighting
+- Auto-completion
 - Tags navigation on ~%~ with [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 - Labels, references, citations and index entries management with [[http://www.gnu.org/software/emacs/manual/html_node/reftex/index.html][RefTeX]]
 
@@ -1384,6 +1408,18 @@ Features:
 - Documentation Lookup
 - Execute Code Snippets
 - Correct Indentation and Commenting
+
+**** Graphql
+[[file:+lang/graphql/README.org][+lang/graphql/README.org]]
+
+This layer adds support for graphql file. It builds around [[https://github.com/davazp/graphql-mode][graphql-mode]]. Please
+check its site for extra info.
+
+Features:
+- Syntax highlight and graphql calls with =graphql-mode=
+- Autocomplete with =comapy-dabbrev=
+- Format buffer with =prettier=
+- Go to definition with =ahs=
 
 **** Shell Scripts
 [[file:+lang/shell-scripts/README.org][+lang/shell-scripts/README.org]]
@@ -1827,13 +1863,14 @@ Features:
 This layer provides support for the Crystal language.
 
 Features:
-- =crystal tool format= on file save
-- integration [[https://play.crystal-lang.org][play.crystal-lang.org]] using [[https://github.com/veelenga/play-crystal.el][play-crystal.el]]
-- Linting with flycheck
-- test runner (=crystal spec=)
+- Format on save
+- Integration of [[https://play.crystal-lang.org][play.crystal-lang.org]] using [[https://github.com/veelenga/play-crystal.el][play-crystal.el]]
+- Syntax checking
+- Auto completion
+- Test execution (=crystal spec=)
 - =crystal tool= integration
 - Interactive REPL ([[https://github.com/brantou/inf-crystal.el][inf-crystal.el]] and [[https://github.com/crystal-community/icr][icr]])
-- static code analysis using [[https://github.com/veelenga/ameba.el][ameba]]
+- Static code analysis using [[https://github.com/veelenga/ameba.el][ameba]]
 
 **** D language
 [[file:+lang/d/README.org][+lang/d/README.org]]
@@ -1884,12 +1921,28 @@ Features:
 **** Erlang
 [[file:+lang/erlang/README.org][+lang/erlang/README.org]]
 
-This layer adds very basic support for Erlang to Spacemacs.
+This layer adds support for [[https://erlang.org/][Erlang]].
+
+Enabling [[https://github.com/emacs-lsp/lsp-mode][Lsp-mode]] brings IDE like
+features following =Language Server Protocol=, through [[https://erlang-ls.github.io/][erlang_ls]]
 
 Features:
 - Syntax highlighting
 - Syntax checking via =Flycheck= integration
 - Auto-completion via =Company= integration
+- Code Completion
+- Go To Definition
+- Go To Implementation for OTP Behaviours
+- Signature Suggestions
+- Compiler Diagnostics
+- [[https://erlang.org/doc/man/dialyzer.html][Dialyzer]] Diagnostics
+- [[https://github.com/inaka/elvis][Elvis]] Diagnostics
+- [[http://erlang.org/doc/apps/edoc/chapter.html][Edoc]]
+- Navigation for Included Files
+- Find/Peek References
+- Outline
+- Workspace Symbols
+- Code Folding
 
 **** F#
 [[file:+lang/fsharp/README.org][+lang/fsharp/README.org]]
@@ -1897,11 +1950,10 @@ Features:
 This layer adds support for F# language using [[https://github.com/fsharp/fsharpbinding][fsharpbinding]] and [[https://github.com/fsharp/fsharpbinding][fsharp-mode]].
 
 Features:
+- Auto-completion
+- Syntax-checking
 - Syntax highlighting
-- Code completion
-- Flycheck integration
 - REPL
-- Compile/Run/Interpreter and info tooltip shortcuts
 
 **** Factor Layer
 [[file:+lang/factor/README.org][+lang/factor/README.org]]
@@ -2041,6 +2093,7 @@ Features:
 - auto-completion with company mode via [[https://github.com/ocaml/merlin][merlin]]
 - syntax-checking via [[https://github.com/flycheck/flycheck-ocaml][flycheck-ocaml]] (or alternatively [[https://github.com/ocaml/merlin][merlin]])
 - =dune= file syntax highlighting and template insertion via [[https://github.com/ocaml/dune/][dune-mode]]
+- Automatic formatting via [[https://github.com/ocaml-ppx/ocamlformat][ocamlformat]]
 
 **** Pact
 [[file:+lang/pact/README.org][+lang/pact/README.org]]
@@ -2061,10 +2114,11 @@ This layer adds support for the Perl5 language.
 
 Features:
 - Syntactic and semantic checking using [[https://github.com/flycheck/flycheck][flycheck]]
-- Auto-completion using [[https://github.com/CeleritasCelery/company-plsense][company-plsense]]
+- Auto-completion
 - Format code with =perltidy=
 - Jump to symbol definition
 - Interactive debug via [[https://github.com/realgud/realgud][realgud]] with [[http://search.cpan.org/~rocky/Devel-Trepan-0.73/lib/Devel/Trepan.pm][trepan.pl]]
+- LSP and DAP support
 
 **** Perl6
 [[file:+lang/perl6/README.org][+lang/perl6/README.org]]
@@ -2115,7 +2169,7 @@ Features:
 - Code Navigation
 - Documentation Lookup using [[https://github.com/proofit404/anaconda-mode][anaconda-mode]] and [[https://github.com/tsgates/pylookup][pylookup]]
 - Test Runners using [[https://github.com/syl20bnr/nose.el][nose.el]] or [[https://github.com/ionrock/pytest-el][pytest]]
-- Virtual Environment using [[https://github.com/jorgenschaefer/pyvenv][pyvenv]] and [[https://github.com/yyuu/pyenv][pyenv]] as well as [[https://github.com/pypa/pipenv][pipenv]]
+- Virtual Environment using [[https://github.com/jorgenschaefer/pyvenv][pyvenv]] and [[https://github.com/yyuu/pyenv][pyenv]] as well as [[https://github.com/pypa/pipenv][pipenv]] and [[https://github.com/galaunay/poetry.el][poetry]]
 - semantic mode is enabled
 - PEP8 compliant formatting via [[https://github.com/google/yapf][YAPF]] or [[https://github.com/ambv/black][black]]
 - PEP8 checks with [[https://pypi.python.org/pypi/flake8][flake8]] or [[https://pypi.python.org/pypi/pylint/1.6.4][pylint]]
@@ -2161,6 +2215,7 @@ Features:
 - Test runner (ruby-test and rspec)
 - Rake runner
 - Linter (rubocop)
+- Formatter (prettier)
 - Interactive REPL and code navigation (robe)
 - Interactive debugger using [[https://github.com/emacs-lsp/dap-mode][dap-mode]]
 
@@ -2182,19 +2237,15 @@ This layer adds support for the Scala language to Spacemacs.
 
 Features:
 - Syntax highlighting
-- Support for language backend. Either using [[https://ensime.github.io/][ENSIME]] or [[https://scalameta.org/metals/][Metals]]
-- Debugging support via dap
+- Support for language backend using LSP and [[https://scalameta.org/metals/][Metals]]
+- Debugging support via =dap=
 - Auto-completion
 - Treeview support for viewing project structure and triggering compilation
 - Syntax-checking
 - Refactoring
 - Incremental compilation
-- Scala Repl
 - Style linting
-- Eldoc integration
 - Optional GGTags search
-- Test execution directly from Emacs
-- Automatic replacement of ASCII arrows with unicode ones
 
 **** SML
 [[file:+lang/sml/README.org][+lang/sml/README.org]]
@@ -2305,6 +2356,7 @@ lots of informative stuff.
 Features:
 - Key bindings available through transient-state or leader key
 - Lazy-loading
+- Auto-completion
 
 *** Protocol Buffers
 [[file:+lang/protobuf/README.org][+lang/protobuf/README.org]]
@@ -2420,6 +2472,7 @@ This layers adds extensive support for [[http://git-scm.com/][git]] to Spacemacs
 
 Features:
 - git repository management the indispensable [[http://magit.vc/][magit]] package
+- [[https://github.com/magit/forge/][forge]] add-on for magit.
 - [[https://github.com/jtatarik/magit-gitflow][git-flow]] add-on for magit.
 - quick in buffer history browsing with [[https://melpa.org/#/git-timemachine][git-timemachine]].
 - quick in buffer last commit message per line with [[https://github.com/syohex/emacs-git-messenger][git-messenger]]
@@ -2440,6 +2493,7 @@ Features:
 - [[https://github.com/defunkt/gist.el][gist.el]]: full-featured mode to browse and post GitHub gists.
 - [[https://github.com/sshaw/git-link][git-link]]: quickly generate URLs for commits or files.
 - [[https://github.com/dgtized/github-clone.el][github-clone]] allows for easy cloning and forking of repositories.
+- [[https://github.com/seagle0128/grip-mode][grip-mode]] Github-flavored Markdown/Org preview using [[https://github.com/joeyespo/grip][Grip]].
 
 ** Perforce
 [[file:+source-control/perforce/README.org][+source-control/perforce/README.org]]
@@ -2500,7 +2554,7 @@ Features:
 This layer loads the necessary packages for spacemacs to start-up.
 
 Features:
-- Loads =evil= key bindings and macros for auto-evilifcation of maps
+- Loads =evil= key bindings and macros for auto-evilification of maps
 - Loads =holy= and =hybrid= modes
 - Loads the official Spacemacs theme
 - Loads =use-package= which is used to load other packages more easily
@@ -2662,10 +2716,11 @@ Features:
 ** Command-log
 [[file:+tools/command-log/README.org][+tools/command-log/README.org]]
 
-This layer adds a handy command demonstration mode to Spacemacs.
+This layer adds handy commands for demonstrating Spacemacs.
 
 Features:
 - Support for logging all entered keys and triggered commands in a designated buffer via [[https://github.com/lewang/command-log-mode][command-log-mode]].
+- Experimental support for logging the last command directly in the mode line via [[https://github.com/tarsius/keycast][keycast]].
 - Provides the best way to demonstrate the connection between keystrokes and commands in Emacs.
 - Provides an easy way to create command logs for training classes.
 
@@ -2797,7 +2852,7 @@ This layer adds support for basic language server protocol packages speaking
 Different language servers may support the language server protocol to varying degrees
 and they may also provide extensions; check the language server's website for
 details.
-=M-x lsp-describe-session= in a LSP buffer to list capabilities of the server.
+~M-x lsp-describe-session~ in a LSP buffer to list capabilities of the server.
 
 Features:
 - Cross references (definitions, references, document symbol, workspace symbol
@@ -2805,12 +2860,12 @@ Features:
 - Workspace-wide symbol rename
 - Symbol highlighting
 - Flycheck
-- Completion with =lsp=
-- Signature help with eldoc
+- Completion with =LSP=
+- Signature help with =eldoc=
 - Symbol documentation in a child frame (=lsp-ui-doc=)
-- Navigation using imenu
+- Navigation using =imenu=
 - Consistent core key bindings in LSP modes
-- Code folding (lsp-origami)
+- Code folding (=lsp-origami=)
 
 ** Meson
 [[file:+tools/meson/README.org][+tools/meson/README.org]]
@@ -3016,7 +3071,7 @@ This layer installs [[https://github.com/ananthakumaran/tide][tide]] package whi
 
 Features:
 - First class support from =tsserver= just like =vscode=: speed and accuracy
-- Linter 
+- Linter
 - Refactor
 - Go to definition
 - Find references

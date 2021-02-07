@@ -58,7 +58,7 @@
       (spacemacs/set-leader-keys
         dotspacemacs-emacs-command-key 'counsel-M-x
         ;; files
-        "ff"  'counsel-find-file
+        "ff"  'spacemacs/counsel-find-file
         "fel" 'counsel-find-library
         "fL"  'counsel-locate
         ;; help
@@ -206,12 +206,20 @@
         "Ce" 'counsel-colors-emacs
         "Cf" 'counsel-faces
         "Cw" 'counsel-colors-web
-        "fr" 'counsel-recentf
+        "fr" 'spacemacs/counsel-recentf
         "rl" 'ivy-resume
+        "sl" 'ivy-resume
         "bb" 'ivy-switch-buffer)
+      ;; Common Ctrl-TAB buffer switch behavior
+      (with-eval-after-load 'evil
+        (evil-global-set-key 'motion (kbd "<C-tab>") 'ivy-switch-buffer)
+        (evil-global-set-key 'motion (kbd "<C-iso-lefttab>") 'ivy-switch-buffer))
+      (define-key ivy-mode-map (kbd "<C-tab>") 'ivy-next-line-and-call)
+      (define-key ivy-mode-map (kbd "<C-iso-lefttab>") 'ivy-previous-line-and-call)
       ;; Moved C-k to C-M-k
-      (define-key ivy-switch-buffer-map (kbd "C-M-k") 'ivy-switch-buffer-kill))
-
+      (define-key ivy-switch-buffer-map (kbd "C-M-k") 'ivy-switch-buffer-kill)
+      (define-key ivy-reverse-i-search-map
+        (kbd "C-M-k") 'ivy-reverse-i-search-kill))
     :config
     (progn
       ;; custom actions for recentf
@@ -226,6 +234,7 @@
       (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
       (define-key ivy-minibuffer-map (kbd "M-SPC") 'hydra-ivy/body)
       (define-key ivy-minibuffer-map (kbd "C-<return>") #'ivy-alt-done)
+      (define-key ivy-minibuffer-map (kbd "C-SPC") #'ivy-call-and-recenter)
 
       (when ivy-ret-visits-directory
         (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
@@ -237,6 +246,9 @@
       ;; Occur
       (evil-set-initial-state 'ivy-occur-grep-mode 'normal)
       (evil-make-overriding-map ivy-occur-mode-map 'normal)
+      (dolist (mode-map (list ivy-occur-mode-map ivy-occur-grep-mode-map))
+        (define-key mode-map "g" nil)
+        (define-key mode-map "U" 'ivy-occur-revert-buffer))
       (ivy-set-occur 'spacemacs/counsel-search
                      'spacemacs//counsel-occur)
       (spacemacs/set-leader-keys-for-major-mode 'ivy-occur-grep-mode
@@ -249,11 +261,14 @@
       (setq ivy-use-selectable-prompt t))))
 
 (defun ivy/init-ivy-avy ()
-  (use-package ivy-avy))
+  (use-package ivy-avy
+    :after ivy))
 
 (defun ivy/init-ivy-hydra ()
-  (use-package ivy-hydra)
-  (define-key hydra-ivy/keymap [escape] 'hydra-ivy/keyboard-escape-quit-and-exit))
+  (use-package ivy-hydra
+    :after ivy
+    :config
+    (define-key hydra-ivy/keymap [escape] 'hydra-ivy/keyboard-escape-quit-and-exit)))
 
 (defun ivy/init-ivy-rich ()
   (use-package ivy-rich

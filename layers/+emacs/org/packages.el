@@ -31,6 +31,7 @@
         (org-jira :toggle org-enable-jira-support)
         org-mime
         org-tempo
+        org-fragtog
         org-pomodoro
         org-present
         org-cliplink
@@ -90,6 +91,14 @@
 (defun org/init-htmlize ()
   (use-package htmlize
     :defer t))
+
+(defun org/init-org-fragtog ()
+
+  (use-package org-fragtog
+    :defer t
+    :init
+  (add-hook 'org-mode-hook 'org-fragtog-mode)
+))
 
 (defun org/init-ob ()
   (use-package ob
